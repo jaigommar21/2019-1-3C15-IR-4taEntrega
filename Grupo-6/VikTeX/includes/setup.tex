@@ -1,0 +1,130 @@
+\RequirePackage{verbatim}
+
+\def\texis{\TeX \raise.15em\hbox{\textsc{i}}S}
+
+\def\viktex{\raise-.10em\hbox{V}\hspace{-0.1em}\raise.05em\hbox{I}\hspace{-0.1em}\raise-.2em\hbox{K}\hspace{-0.23em}\TeX\hspace{0.2em}}
+\def\viktexver{1.0 }
+
+
+\ifpdf\hypersetup{%
+  pdftitle = {\stitle}, pdfsubject = {\doctype}, pdfkeywords =
+  {blockchain}, pdfauthor = {\textcopyright\ \authors}, pdfcreator = {\LaTeX\ con
+    el paquete \flqq hyperref\frqq}, pdfproducer =
+  {pdfeTeX-0.\the\pdftexversion\pdftexrevision}, } \pdfinfo{/CreationDate
+  (\today)} \fi
+
+
+\linespread{1.2}\selectfont \setcitestyle{square} %\printtodos
+
+\newgeometry{lmargin=4cm,rmargin=3cm}
+
+
+\pagestyle{fancy}
+
+\addtolength{\headheight}{2pt}
+\fancyhf{}
+\defaultHeader
+\fancyhead[RO,LE]{\thepage}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyfoot[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+  \hbox{}
+  \thispagestyle{empty}
+  \newpage
+  \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                                   Parts generation setup
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\partTitleVal{}
+\newcommand{\partTitle}[1]{
+\def\partTitleVal{#1}
+}
+
+\def\partDescVal{}
+\newcommand{\partDesc}[1]{
+\def\partDescVal{#1}
+}
+
+\def\partBackTextVal{}
+\newcommand{\partBackText}[1]{
+\def\partBackTextVal{#1}
+}
+
+\newcommand{\makepart}{\part{\partTitleVal}\partDesc{}\partBackText{}\def\tienePartesTeXiS{}}
+\newcommand{\makespart}{\part*{\partTitleVal}\partDesc{}\partBackText{}\def\tienePartesTeXiS{}}
+
+\makeatletter
+\renewcommand\part{
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  \thispagestyle{empty}
+  \if@twocolumn
+    \onecolumn
+    \@tempswatrue
+  \else
+    \@tempswafalse
+  \fi
+  \null\vspace*{2cm}
+  \secdef\@part\@spart}
+
+\def\@part[#1]#2{%
+    \ifnum \c@secnumdepth >-2\relax
+      \refstepcounter{part}%
+      \addcontentsline{toc}{part}{\thepart\hspace{1em}#1}%
+    \else
+      \addcontentsline{toc}{part}{#1}%
+    \fi
+    \markboth{}{}%
+    {\centering
+     \interlinepenalty \@M
+     \normalfont
+     \ifnum \c@secnumdepth >-2\relax
+       \huge\bfseries \partname\nobreakspace\thepart
+       \par
+       \vskip 20\p@
+     \fi
+     \Huge \bfseries #2\par}
+    {\vspace*{2cm}\noindent\partDescVal}%
+    \@endpart}
+
+
+\def\@spart#1{%
+    {\centering
+     \interlinepenalty \@M
+     \normalfont
+     \Huge \bfseries #1\par%
+
+    {\vspace*{2cm}\noindent\partDescVal}%
+}%
+    \@endpart}
+
+\def\@endpart{\vfil\newpage
+              \if@twoside
+               \if@openright
+                \null
+                \thispagestyle{empty}%
+                {\partBackTextVal}
+                \newpage
+               \fi
+              \fi
+              \if@tempswa
+                \twocolumn
+              \fi}
+\makeatother
